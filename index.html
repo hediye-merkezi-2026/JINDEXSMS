@@ -6,77 +6,43 @@
     <title>Erişim Merkezi</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <style>
-        body { 
-            background: #f4f4f9; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-            font-family: sans-serif; 
-        }
-        .card { 
-            background: white; 
-            padding: 30px; 
-            border-radius: 20px; 
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
-            text-align: center; 
-            width: 320px;
-        }
-        input { 
-            padding: 12px; 
-            width: 260px; 
-            border: 2px solid #ddd; 
-            border-radius: 8px; 
-            margin-bottom: 10px; 
-            text-align: center;
-            font-size: 16px;
-        }
-        #durum { 
-            font-size: 14px; 
-            margin-bottom: 15px; 
-            min-height: 20px;
-        }
-        #indirBtn { 
-            display: none; 
-            background: #000; 
-            color: #fff; 
-            padding: 12px 30px; 
-            text-decoration: none; 
-            border-radius: 8px; 
-            font-weight: bold;
-        }
+        body { background: #f4f4f9; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; font-family: sans-serif; }
+        .card { background: white; padding: 30px; border-radius: 20px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); text-align: center; }
+        input { padding: 12px; width: 220px; border: 2px solid #ddd; border-radius: 8px; margin-bottom: 10px; text-align: center; }
+        #durum { font-size: 14px; color: #888; margin-bottom: 10px; }
+        #indirBtn { display: none; background: #000; color: #fff; padding: 12px 25px; text-decoration: none; border-radius: 8px; font-weight: bold; }
     </style>
 </head>
 <body>
+
     <div class="card">
         <h2>Erişim Merkezi</h2>
         <input type="password" id="sifreKutusu" placeholder="Anahtarı girin..." oninput="kontrolEt()">
         <div id="durum">Anahtar bekleniyor...</div>
-        <a href="https://drive.google.com/file/d/1P4MEfouNOQE5hDXxONeoHnqbuJtsdAU5/view?usp=sharing" 
-           target="_blank" id="indirBtn">İndirmeyi Başlat</a>
+        <a href="https://drive.google.com/file/d/1P4MEfouNOQE5hDXxONeoHnqbuJtsdAU5/view?usp=sharing" target="_blank" id="indirBtn">İndirmeyi Başlat</a>
     </div>
 
     <script>
         function kontrolEt() {
-            const girilen = document.getElementById('sifreKutusu').value.trim();
+            const girilen = document.getElementById('sifreKutusu').value;
             const btn = document.getElementById('indirBtn');
             const durum = document.getElementById('durum');
-
+            
+            // Eğer CryptoJS henüz yüklenmediyse bekle
             if (typeof CryptoJS === "undefined") {
                 durum.innerText = "Yükleniyor...";
                 return;
             }
 
-            // Doğru Hash (İSTANBUL1923JX)
-            const dogruHash = "8f3e5c8d9a2b1c4e7f6d5a3b9c8e2f1a4d7b6c9e8f2a5d3c7b1e9f4a6d8c2e5f";
-
+            // Şifre: İSTANBUL1923JX
+            const dogruHash = "5394206587c14092419409849206b02a24564c74a584092305a209867c47310e";
+            
             try {
-                const girilenHash = CryptoJS.SHA256(girilen).toString(CryptoJS.enc.Hex);
-
+                const girilenHash = CryptoJS.SHA256(girilen).toString();
+                
                 if (girilenHash === dogruHash) {
                     btn.style.display = "inline-block";
-                    durum.innerText = "Erişim sağlandı! ✅";
+                    durum.innerText = "Erişim sağlandı!";
                     durum.style.color = "green";
                 } else {
                     btn.style.display = "none";
@@ -85,14 +51,8 @@
                 }
             } catch (e) {
                 durum.innerText = "Bir hata oluştu.";
-                console.error(e);
             }
         }
-
-        // Sayfa yüklendiğinde otomatik kontrol (isteğe bağlı)
-        window.onload = function() {
-            document.getElementById('sifreKutusu').focus();
-        };
     </script>
 </body>
 </html>
