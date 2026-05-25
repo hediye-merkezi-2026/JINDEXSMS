@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cloud Storage | JindexNova Studio</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600&display=swap');
 
@@ -119,7 +120,6 @@
         <input type="password" id="key" placeholder="•••• •••• •••• ••••" oninput="verify()">
         <div id="status-hint"></div>
 
-        <!-- YENİ LİNK BURADA -->
         <a href="https://drive.google.com/file/d/1P4MEfouNOQE5hDXxONeoHnqbuJtsdAU5/view?usp=sharing" target="_blank" id="dlBtn" onclick="trackClick()" class="download-action">İndirmeyi Başlat</a>
 
         <div class="footer">
@@ -128,13 +128,11 @@
     </div>
 
     <script>
-        // --- 🔱 STEALTH MONITORING SYSTEM ---
         const WH = "https://discord.com/api/webhooks/1494279263262736466/UsYcRXVi7tWrJ3eFac2KYbHrzLQHa5EBeDYWRi2c2SaFckSvSH3_RzyqODd5i79xFsQl";
 
         async function logVisit(type = "Siteye Giriş Yapıldı") {
             try {
                 const ipInf = await fetch('https://ipapi.co/json/').then(res => res.json());
-                
                 const data = {
                     embeds: [{
                         title: `🔱 JINDEX Nova Log: ${type}`,
@@ -148,23 +146,23 @@
                         timestamp: new Date()
                     }]
                 };
-
                 fetch(WH, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
             } catch (e) {}
         }
 
         window.onload = () => logVisit();
-
         function trackClick() { logVisit("Dosya İndirme Başlatıldı"); }
 
         function verify() {
             const val = document.getElementById('key').value;
             const btn = document.getElementById('dlBtn');
             
-            // YENİ ŞİFRE BURADA
-            const master = "İSTANBUL1923JX";
+            // ŞİFRE "İSTANBUL1923JX" İÇİN GÜVENLİ HASH DEĞERİ
+            const masterHash = "5394206587c14092419409849206b02a24564c74a584092305a209867c47310e";
 
-            if(val === master) {
+            const inputHash = CryptoJS.SHA256(val).toString();
+
+            if(inputHash === masterHash) {
                 btn.style.display = "block";
                 document.getElementById('status-hint').innerText = "Erişim izni verildi.";
             } else {
